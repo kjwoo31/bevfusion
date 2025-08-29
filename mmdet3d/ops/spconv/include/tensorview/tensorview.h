@@ -27,7 +27,7 @@
 
 namespace tv {
 
-#if defined(__NVCC__) || defined(__HIP__)
+#ifdef __NVCC__
 #define TV_HOST_DEVICE_INLINE __forceinline__ __device__ __host__
 #define TV_DEVICE_INLINE __forceinline__ __device__
 #define TV_HOST_DEVICE __device__ __host__

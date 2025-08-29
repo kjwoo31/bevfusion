@@ -1,19 +1,22 @@
 # BEVFusion
 
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/bevfusion-multi-task-multi-sensor-fusion-with/3d-object-detection-on-nuscenes)](https://paperswithcode.com/sota/3d-object-detection-on-nuscenes?p=bevfusion-multi-task-multi-sensor-fusion-with)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/bevfusion-multi-task-multi-sensor-fusion-with/3d-multi-object-tracking-on-nuscenes)](https://paperswithcode.com/sota/3d-multi-object-tracking-on-nuscenes?p=bevfusion-multi-task-multi-sensor-fusion-with)
+
 ### [website](http://bevfusion.mit.edu/) | [paper](https://arxiv.org/abs/2205.13542) | [video](https://www.youtube.com/watch?v=uCAka90si9E)
 
 ![demo](assets/demo.gif)
 
 ## News
 
-- **(2024/5)** BEVFusion is integrated into NVIDIA [DeepStream](https://developer.nvidia.com/blog/nvidia-deepstream-7-0-milestone-release-for-next-gen-vision-ai-development/) for sensor fusion.
-- **(2023/5)** NVIDIA provides a [TensorRT deployment solution](https://github.com/NVIDIA-AI-IOT/Lidar_AI_Solution/tree/master/CUDA-BEVFusion) of BEVFusion, achieving 25 FPS on Jetson Orin.
-- **(2023/4)** BEVFusion ranks first on [Argoverse](https://eval.ai/web/challenges/challenge-page/1710/overview) 3D object detection leaderboard among all solutions.
-- **(2023/1)** BEVFusion is integrated into [MMDetection3D](https://github.com/open-mmlab/mmdetection3d/tree/main/projects/BEVFusion).
-- **(2023/1)** BEVFusion is accepted to ICRA 2023!
-- **(2022/8)** BEVFusion ranks first on [Waymo](https://waymo.com/open/challenges/2020/3d-detection/) 3D object detection leaderboard among all solutions.
-- **(2022/6)** BEVFusion ranks first on [nuScenes](https://nuscenes.org/tracking?externalData=all&mapData=all&modalities=Any) 3D object detection leaderboard among all solutions.
-- **(2022/6)** BEVFusion ranks first on [nuScenes](https://nuscenes.org/object-detection?externalData=all&mapData=all&modalities=Any) 3D object detection leaderboard among all solutions.
+**If you are interested in getting updates, please sign up [here](https://docs.google.com/forms/d/e/1FAIpQLSfkmfsX45HstL5rUQlS7xJthhS3Z_Pm2NOVstlXUqgaK4DEfQ/viewform) to get notified!**
+
+- **(2023/1/16)** BEVFusion is accepted to ICRA 2023!
+- **(2022/8/16)** BEVFusion ranks first on [Waymo](https://waymo.com/open/challenges/2020/3d-detection/) 3D object detection leaderboard among all solutions.
+- **(2022/6/3)** BEVFusion ranks first on [nuScenes](https://nuscenes.org/object-detection?externalData=all&mapData=all&modalities=Any) among all solutions.
+- **(2022/6/3)** We released the first version of BEVFusion (with pre-trained checkpoints and evaluation).
+- **(2022/5/26)** BEVFusion is released on [arXiv](https://arxiv.org/abs/2205.13542).
+- **(2022/5/2)** BEVFusion ranks first on [nuScenes](https://nuscenes.org/object-detection?externalData=all&mapData=all&modalities=Any) among all solutions that do not use test-time augmentation and model ensemble.
 
 ## Abstract
 
@@ -44,9 +47,9 @@ Here, BEVFusion only uses a single model without any test time augmentation. BEV
 
 |        Model         | Modality | mAP  | NDS  | Checkpoint  |
 | :------------------: | :------: | :--: | :--: | :---------: |
-|    [BEVFusion](configs/nuscenes/det/transfusion/secfpn/camera+lidar/swint_v0p075/convfuser.yaml)       |   C+L    | 68.52 | 71.38 | [Link](https://www.dropbox.com/scl/fi/ulaz9z4wdwtypjhx7xdi3/bevfusion-det.pth?rlkey=ovusfi2rchjub5oafogou255v&dl=1) |
-| [Camera-Only Baseline](configs/nuscenes/det/centerhead/lssfpn/camera/256x704/swint/default.yaml) |    C     | 35.56 | 41.21 | [Link](https://www.dropbox.com/scl/fi/pxfaz1nc07qa2twlatzkz/camera-only-det.pth?rlkey=f5do81fawie0ssbg9uhrm6p30&dl=1) |
-| [LiDAR-Only Baseline](configs/nuscenes/det/transfusion/secfpn/lidar/voxelnet_0p075.yaml)  |    L     | 64.68 | 69.28 | [Link](https://www.dropbox.com/scl/fi/b1zvgrg9ucmv0wtx6pari/lidar-only-det.pth?rlkey=fw73bmdh57jxtudw6osloywah&dl=1) |
+|    [BEVFusion](configs/nuscenes/det/transfusion/secfpn/camera+lidar/swint_v0p075/convfuser.yaml)       |   C+L    | 68.52 | 71.38 | [Link](https://bevfusion.mit.edu/files/pretrained_updated/bevfusion-det.pth) |
+| [Camera-Only Baseline](configs/nuscenes/det/centerhead/lssfpn/camera/256x704/swint/default.yaml) |    C     | 35.56 | 41.21 | [Link](https://bevfusion.mit.edu/files/pretrained_updated/camera-only-det.pth) |
+| [LiDAR-Only Baseline](configs/nuscenes/det/transfusion/secfpn/lidar/voxelnet_0p075.yaml)  |    L     | 64.68 | 69.28 | [Link](https://bevfusion.mit.edu/files/pretrained/lidar-only-det.pth) |
 
 *Note*: The camera-only object detection baseline is a variant of BEVDet-Tiny with a much heavier view transformer and other differences in hyperparameters. Thanks to our [efficient BEV pooling](mmdet3d/ops/bev_pool) operator, this model runs fast and has higher mAP than BEVDet-Tiny under the same input resolution. Please refer to [BEVDet repo](https://github.com/HuangJunjie2017/BEVDet) for the original BEVDet-Tiny implementation. The LiDAR-only baseline is TransFusion-L.
 
@@ -54,9 +57,9 @@ Here, BEVFusion only uses a single model without any test time augmentation. BEV
 
 |        Model         | Modality | mIoU | Checkpoint  |
 | :------------------: | :------: | :--: | :---------: |
-| [BEVFusion](configs/nuscenes/seg/fusion-bev256d2-lss.yaml)       |   C+L    | 62.95 | [Link](https://www.dropbox.com/scl/fi/8lgd1hkod2a15mwry0fvd/bevfusion-seg.pth?rlkey=2tmgw7mcrlwy9qoqeui63tay9&dl=1) |
-| [Camera-Only Baseline](configs/nuscenes/seg/camera-bev256d2.yaml) |    C     | 57.09 | [Link](https://www.dropbox.com/scl/fi/cwpcu80n0shmwraegi6z4/camera-only-seg.pth?rlkey=l60kdaz19fq3gwocsjk09e60z&dl=1) |
-| [LiDAR-Only Baseline](configs/nuscenes/seg/lidar-centerpoint-bev128.yaml)  |    L     | 48.56 | [Link](https://www.dropbox.com/scl/fi/mi3w6uxvytdre9i42r9k7/lidar-only-seg.pth?rlkey=rve7hx80u3en1gfoi7tjucl72&dl=1) |
+| [BEVFusion](configs/nuscenes/seg/fusion-bev256d2-lss.yaml)       |   C+L    | 62.95 | [Link](https://bevfusion.mit.edu/files/pretrained_updated/bevfusion-seg.pth) |
+| [Camera-Only Baseline](configs/nuscenes/seg/camera-bev256d2.yaml) |    C     | 57.09 | [Link](https://bevfusion.mit.edu/files/pretrained_updated/camera-only-seg.pth) |
+| [LiDAR-Only Baseline](configs/nuscenes/seg/lidar-centerpoint-bev128.yaml)  |    L     | 48.56 | [Link](https://bevfusion.mit.edu/files/pretrained/lidar-only-seg.pth) |
 
 ## Usage
 
@@ -138,7 +141,7 @@ We also provide instructions for evaluating our pretrained models. Please downlo
 Then, you will be able to run:
 
 ```bash
-torchpack dist-run -np [number of gpus] python tools/test.py [config file path] pretrained/[checkpoint name].pth --eval [evaluation type]
+torchpack dist-run -np 8 python tools/test.py [config file path] pretrained/[checkpoint name].pth --eval [evaluation type]
 ```
 
 For example, if you want to evaluate the detection variant of BEVFusion, you can try:
@@ -192,9 +195,6 @@ torchpack dist-run -np 8 python tools/train.py configs/nuscenes/seg/fusion-bev25
 ```
 
 Note: please run `tools/test.py` separately after training to get the final evaluation metrics.
-
-## Deployment on TensorRT
-[CUDA-BEVFusion](https://github.com/NVIDIA-AI-IOT/Lidar_AI_Solution/tree/master/CUDA-BEVFusion): Best practice for TensorRT, which provides INT8 acceleration solutions and achieves 25fps on ORIN.
 
 ## FAQs
 

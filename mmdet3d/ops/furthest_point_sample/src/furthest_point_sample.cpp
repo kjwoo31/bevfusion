@@ -2,10 +2,14 @@
 // https://github.com/sshaoshuai/Pointnet2.PyTorch/tree/master/pointnet2/src/sampling.cpp
 
 #include <ATen/cuda/CUDAContext.h>
+#include <ATen/cuda/CUDAContext.h>
+#include <ATen/cuda/CUDAEvent.h>
 #include <torch/extension.h>
 #include <torch/serialize/tensor.h>
-#include <c10/cuda/CUDAStream.h>
+
 #include <vector>
+
+
 
 int furthest_point_sampling_wrapper(int b, int n, int m,
                                     at::Tensor points_tensor,

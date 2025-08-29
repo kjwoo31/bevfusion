@@ -75,13 +75,6 @@ __device__ __forceinline__ static void reduceAdd(double *address, double val) {
   atomicAdd(address, val);
 #endif
 }
-#elif defined(__HIP__)
-__device__ __forceinline__ static void reduceAdd(float *address, float val) {
-  atomicAdd(address, val);
-}
-__device__ __forceinline__ static void reduceAdd(double *address, double val) {
-  atomicAdd(address, val);
-}
 #endif
 
 template <typename T>

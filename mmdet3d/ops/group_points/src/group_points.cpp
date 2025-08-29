@@ -1,13 +1,16 @@
 // Modified from
 // https://github.com/sshaoshuai/Pointnet2.PyTorch/tree/master/pointnet2/src/group_points.cpp
 
+#include <ATen/cuda/CUDAContext.h>
+#include <ATen/cuda/CUDAEvent.h>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 #include <torch/extension.h>
 #include <torch/serialize/tensor.h>
-#include <c10/cuda/CUDAStream.h>
 
 #include <vector>
+
+
 
 int group_points_wrapper(int b, int c, int n, int npoints, int nsample,
                          at::Tensor points_tensor, at::Tensor idx_tensor,
