@@ -33,7 +33,7 @@ RUN pip install onnxsim==0.4.10
 RUN pip install onnxruntime==1.13.1
 RUN pip install onnx-graphsurgeon
 RUN pip install shapely==1.8.0
-RUN pip install --no-cache-dir --extra-index-url https://pypi.nvidia.com pytorch-quantization
+RUN pip install pytorch-quantization==2.1.3
 RUN pip install setuptools==59.5.0
 
 WORKDIR /mnt/OT_DATASET/algorithm/Lidar_AI_Solution/CUDA-BEVFusion/bevfusion
