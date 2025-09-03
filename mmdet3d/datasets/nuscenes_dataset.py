@@ -426,6 +426,7 @@ class NuScenesDataset(Custom3DDataset):
 
         output_dir = osp.join(*osp.split(result_path)[:-1])
         nusc = NuScenes(version=self.version, dataroot=self.dataset_root, verbose=False)
+        # TODO fix /opt/conda/lib/python3.8/site-packages/nuscenes/utils/splits.py mini_val scene name
         eval_set_map = {
             "v1.0-mini": "mini_val",
             "v1.0-trainval": "val",

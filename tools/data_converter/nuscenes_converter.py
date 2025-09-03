@@ -76,8 +76,11 @@ def create_nuscenes_infos(
     # filter existing scenes.
     available_scenes = get_available_scenes(nusc)
     available_scene_names = [s["name"] for s in available_scenes]
-    train_scenes = list(filter(lambda x: x in available_scene_names, train_scenes))
-    val_scenes = list(filter(lambda x: x in available_scene_names, val_scenes))
+    # TODO
+    # train_scenes = list(filter(lambda x: x in available_scene_names, train_scenes))
+    # val_scenes = list(filter(lambda x: x in available_scene_names, val_scenes))
+    train_scenes = available_scene_names
+    val_scenes = available_scene_names
     train_scenes = set(
         [
             available_scenes[available_scene_names.index(s)]["token"]
@@ -211,16 +214,21 @@ def _fill_trainval_infos(nusc, train_scenes, val_scenes, test=False, max_sweeps=
         e2g_r_mat = Quaternion(e2g_r).rotation_matrix
 
         # obtain 6 image's information per frame
-        camera_types = [
-            "CAM_FRONT",
-            "CAM_FRONT_RIGHT",
-            "CAM_FRONT_LEFT",
-            "CAM_BACK",
-            "CAM_BACK_LEFT",
-            "CAM_BACK_RIGHT",
-        ]
+        # camera_types = [
+        #     "CAM_FRONT",
+        #     "CAM_FRONT_RIGHT",
+        #     "CAM_FRONT_LEFT",
+        #     "CAM_BACK",
+        #     "CAM_BACK_LEFT",
+        #     "CAM_BACK_RIGHT",
+        # ]
+        camera_types = [key for key in list(sample['data'].keys()) if 'CAM' in key]
         for cam in camera_types:
-            cam_token = sample["data"][cam]
+            try:
+                cam_token = sample["data"][cam]
+            except KeyError:
+                print(f"{list(sample['data'].keys())} doesn't have {cam}")
+                continue
             cam_path, _, camera_intrinsics = nusc.get_sample_data(cam_token)
             cam_info = obtain_sensor2top(
                 nusc, cam_token, l2e_t, l2e_r_mat, e2g_t, e2g_r_mat, cam
@@ -286,7 +294,7 @@ def _fill_trainval_infos(nusc, train_scenes, val_scenes, test=False, max_sweeps=
 
         if sample["scene_token"] in train_scenes:
             train_nusc_infos.append(info)
-        else:
+        if sample["scene_token"] in val_scenes:
             val_nusc_infos.append(info)
 
     return train_nusc_infos, val_nusc_infos

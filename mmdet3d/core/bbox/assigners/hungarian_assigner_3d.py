@@ -49,6 +49,15 @@ class HungarianAssigner3D(BaseAssigner):
         self.iou_cost = build_match_cost(iou_cost)
         self.pc_range = pc_range
 
+    def linear_sum_assignment_with_inf(self, cost_matrix):
+        cost_matrix = np.asarray(cost_matrix)
+        nan = np.isnan(cost_matrix).any()
+        if nan:
+            print("nan in cost matrix. Please check optimizer")
+            cost_matrix[np.isnan(cost_matrix)]=1e+5
+
+        return linear_sum_assignment(cost_matrix)
+
     def assign(
         self, bbox_pred, cls_pred, gt_bboxes, gt_labels, gt_bboxes_ignore=None, eps=1e-7
     ):
@@ -111,7 +120,7 @@ class HungarianAssigner3D(BaseAssigner):
             raise ImportError(
                 'Please run "pip install scipy" ' "to install scipy first."
             )
-        matched_row_inds, matched_col_inds = linear_sum_assignment(cost)
+        matched_row_inds, matched_col_inds = self.linear_sum_assignment_with_inf(cost)
         matched_row_inds = torch.from_numpy(matched_row_inds).to(bbox_pred.device)
         matched_col_inds = torch.from_numpy(matched_col_inds).to(bbox_pred.device)
 

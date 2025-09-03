@@ -3,6 +3,7 @@ from mmdet.core.bbox.assigners import AssignResult, BaseAssigner
 from mmdet.core.bbox.match_costs import build_match_cost
 from mmdet.core.bbox.match_costs.builder import MATCH_COST
 from mmdet.core.bbox.iou_calculators import build_iou_calculator
+import numpy as np
 import torch
 
 try:
@@ -91,6 +92,15 @@ class HungarianAssigner3D(BaseAssigner):
         self.iou_cost = build_match_cost(iou_cost)
         self.iou_calculator = build_iou_calculator(iou_calculator)
 
+    def linear_sum_assignment_with_inf(self, cost_matrix):
+        cost_matrix = np.asarray(cost_matrix)
+        nan = np.isnan(cost_matrix).any()
+        if nan:
+            print("nan in cost matrix. Please check optimizer")
+            cost_matrix[np.isnan(cost_matrix)]=1e+5
+
+        return linear_sum_assignment(cost_matrix)
+
     def assign(self, bboxes, gt_bboxes, gt_labels, cls_pred, train_cfg):
         num_gts, num_bboxes = gt_bboxes.size(0), bboxes.size(0)
 
@@ -124,7 +134,7 @@ class HungarianAssigner3D(BaseAssigner):
         if linear_sum_assignment is None:
             raise ImportError('Please run "pip install scipy" '
                               'to install scipy first.')
-        matched_row_inds, matched_col_inds = linear_sum_assignment(cost)
+        matched_row_inds, matched_col_inds = self.linear_sum_assignment_with_inf(cost)
         matched_row_inds = torch.from_numpy(matched_row_inds).to(bboxes.device)
         matched_col_inds = torch.from_numpy(matched_col_inds).to(bboxes.device)
 
