@@ -5,3 +5,10 @@ model:
     out_channels: 256
 
 dataset_root: data/250814_nuscenes_sample/
+
+optimizer:
+  lr: 5.0e-5
+  weight_decay: 0.002
+
+data:
+  samples_per_gpu: 3
